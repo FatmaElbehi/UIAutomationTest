@@ -1,0 +1,124 @@
+version: '3.8'
+volumes:
+  app-data:
+    driver: local
+  tmp-x11-unix:
+    driver: local
+
+services:
+  behave:
+    image: behave
+    container_name: behave
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+       - selenium-hub
+    shm_size: 4g
+    volumes:
+      - tmp-x11-unix:/tmp/.X11-unix:rw
+      - .:/app:rw
+      - /home/centos/docker/jenkins/jenkins_configuration/workspace/international-test-auto_master:/app:rw
+
+    environment:
+      - SELENIUM_HUB_URL=http://localhost:4444/wd/hub
+      - CHROME_BINARY_PATH=/usr/bin/google-chrome
+      - DBUS_SESSION_BUS_ADDRESS=/dev/null
+    networks:
+      - orange-network
+ 
+  chrome:
+    image: selenium/node-chrome:dev
+    container_name: chrome
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - VNC_PASSWORD=123
+      - DISPLAY=:99
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1080
+    networks:
+      - orange-network
+
+  edge:
+    image: selenium/node-edge:dev
+    container_name: edge
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - VNC_PASSWORD=123
+      - DISPLAY=:99
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1080
+    networks:
+      - orange-network
+
+  firefox:
+    image: selenium/node-firefox:dev
+    container_name: firefox
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - VNC_PASSWORD=123
+      - DISPLAY=:99
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1080
+    networks:
+      - orange-network
+ 
+  chrome_video:
+    image: selenium/video:ffmpeg-6.1-20240123
+    container_name: chrome_video
+    depends_on:
+      - chrome
+    environment:
+      - DISPLAY_CONTAINER_NAME=chrome
+      - FILE_NAME=chrome_video.mp4
+ 
+  edge_video:
+    image: selenium/video:ffmpeg-6.1-20240123
+    container_name: edge_video
+    depends_on:
+      - edge
+    environment:
+      - DISPLAY_CONTAINER_NAME=edge
+      - FILE_NAME=edge_video.mp4
+  
+  firefox_video:
+    image: selenium/video:ffmpeg-6.1-20240123
+    container_name: firefox_video
+    depends_on:
+      - firefox
+    environment:
+      - DISPLAY_CONTAINER_NAME=firefox
+      - FILE_NAME=firefox_video.mp4
+ 
+  selenium-hub:
+    image: selenium/hub:latest
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+    environment:
+      - GRID_MAX8SESSION=100
+      - GRID_BROWSER_TIMEOUT=3000
+      - GRID_TIMEOUT=3000
+    networks:
+      - orange-network
+      
+networks:
+  orange-network:
+    external: true

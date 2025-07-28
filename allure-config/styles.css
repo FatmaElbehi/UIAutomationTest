@@ -1,0 +1,43 @@
+.side-nav__brand {
+  background: url('mdw-logo.jpg') no-repeat left center !important;
+  margin-left: 10px;
+  width:10px;
+  height: 30px;
+  
+}
+.side-nav{
+  background-color: #53b9bf !important;
+  border-right: 4px solid #00bcd4;
+  font-family:'Segoe UI';
+  }
+  .side-nav__brand-text{
+    display: none !important;
+  }
+  .side-nav__link {
+    color: #000 ;
+
+  }
+  .side-nav__collapse_active, .side-nav__link_active {
+    color:#fff
+  }
+  .side-nav__collapse, .side-nav__link{
+    color: #000 ;
+
+  }
+
+
+  /* .side-nav__link_active{
+  border-right-color: rgba(0, 0, 0, 0);
+  }
+  .side-nav__text{
+  color: white;
+  }
+  .widget__title{
+  font-family:'Segoe UI';
+  text-transform: none;
+  font-weight: 500;
+  }
+  .button_inverse{
+  color: white;
+  border-color: white;
+  } */
