@@ -30,7 +30,7 @@ class LoginPage:
          test_system_url = config.get("TEST_SYSTEM_URL", "")
         self.driver.get(test_system_url)
         self.logger.info("Login page Visited")
-        time.sleep(1)  # Add a delay of 1 second after visiting the page
+        #time.sleep(5)  # Add a delay of 1 second after visiting the page
 
     def enter_username(self, username):
         try:

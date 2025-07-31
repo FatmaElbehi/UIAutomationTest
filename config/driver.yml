@@ -1,4 +1,4 @@
-TEST_SYSTEM_URL: "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+TEST_SYSTEM_URL: "http://localhost:3000/"
 RESET_PASS_URL: "https://opensource-demo.orangehrmlive.com/web/index.php/auth/requestPasswordResetCode"
 SEND_RESET_PASS_URL: "https://opensource-demo.orangehrmlive.com/web/index.php/auth/sendPasswordReset"
 USERS_URL: "https://opensource-demo.orangehrmlive.com/web/index.php/admin/viewSystemUsers"
