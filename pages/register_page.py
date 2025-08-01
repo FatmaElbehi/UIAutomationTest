@@ -2,7 +2,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from resources.DashboardLocators import DashboardLocators
-from resources.LoginPageLocators import LoginPageLocators
+#from resources.RegisterPageLocators import RegisterPageLocators
 import yaml
 import logging
 import os
@@ -21,30 +21,29 @@ error_handler.setFormatter(error_formatter)
 # Attach the error handler to the root logger
 logging.getLogger().addHandler(error_handler)
 
-class LoginPage:
+class RegisterPage:
     def __init__(self, driver):
         self.driver = driver
         self.logger = logging.getLogger(__name__)
 
     def visit(self):
         with open('config/driver.yml') as file:
-         config = yaml.safe_load(file)
-         test_system_url = config.get("LOGIN_SYSTEM_URL", "")
-        self.driver.get(test_system_url)
-        self.logger.info("Login page Visited")
-        #time.sleep(5)  # Add a delay of 1 second after visiting the page
+            config = yaml.safe_load(file)
+            register_system_url = config.get("REGISTER_SYSTEM_URL", "")
+        self.driver.get(register_system_url)
+        self.logger.info("Register page Visited")
 
     def enter_username(self, username):
         try:
             username_field = self.driver.find_element(*LoginPageLocators.USERNAME_INPUT)
             username_field.clear()
-            
+
             if username is not None and username != "":
                 username_field.send_keys(username)
                 self.logger.info("Username Entered: %s" % username)
             '''else:
                 self.logger.info("Empty Username Entered")'''
-            
+
             time.sleep(5)  # Add a delay after entering the username
             return True
         except Exception as e:
@@ -56,13 +55,13 @@ class LoginPage:
         try:
             password_field = self.driver.find_element(*LoginPageLocators.PASSWORD_INPUT)
             password_field.clear()
-            
+
             if password is not None and password != "":
                 password_field.send_keys(password)
                 self.logger.info("Password Entered")
             '''else:
                 self.logger.info("Empty Password Entered")'''
-            
+
             time.sleep(1)  # Add a delay after entering the password
             return True
         except Exception as e:
@@ -73,10 +72,10 @@ class LoginPage:
         try:
             username_field = self.driver.find_element(*LoginPageLocators.USERNAME_INPUT)
             username_field.clear()
-            
+
             username_field.send_keys("")
             self.logger.info("Empty Username Entered")
-            
+
             time.sleep(5)  # Add a delay after entering the username
             return True
         except Exception as e:
@@ -114,12 +113,12 @@ class LoginPage:
             time.sleep(1)  # Add a delay of 1 second after getting the error message
             return error_message
         except NoSuchElementException:
-                self.logger.error("Failed to get error message")
-                return None
+            self.logger.error("Failed to get error message")
+            return None
         except Exception as e:
             self.logger.error("Failed to get error message: %s" % str(e))
             return None
-    
+
     def required_msg(self, required_msg):
         try:
             error_message_req = self.driver.find_element(*LoginPageLocators.REQUIRED)

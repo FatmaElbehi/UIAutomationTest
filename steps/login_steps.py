@@ -35,7 +35,16 @@ def step_impl(context):
 @then('I will be redirect to the dashboard page')
 def verify_redirection(context):
        context.login_page.assert_dashboard_displayed()
-       save_screenshot(context, "Redirect_Dashboard.png") 
+       save_screenshot(context, "Redirect_Dashboard.png")
+
+@then(u'Click on the OK button')
+def step_impl(context):
+    try:
+        context.login_page.click_ok_button()
+        logging.info("Clicked the OK button")
+        save_screenshot(context, "OK_button_clicked.png")
+    except Exception as e:
+        logging.error("An error occurred while clicking the OK button: %s", str(e))
 
 @then('I should receive an error alert "{msgalert}"')
 def step_impl(context, msgalert):

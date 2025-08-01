@@ -1,7 +1,10 @@
 @allure.label.epic:LogOut
 Feature: LogOut
-  @allure.label.epic:LogOut
   @logout-OK
-  Scenario: Logout
-    Given I click the logout button
-    Then I should be redirected to the login page
+  Scenario Outline: Logout
+    Given I am on the Dashboard interface
+    When I click on the Log out Button
+    Then I will be redirect to the login "<url>"
+    Examples:
+      | url                   |
+      |http://localhost:3000/ |
